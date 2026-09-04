@@ -1,0 +1,30 @@
+#!/bin/bash
+
+#SBATCH --job-name=LSN_CL_ood
+#SBATCH --nodes=1
+#SBATCH --cpus-per-task=8
+#SBATCH --partition=boost_usr_prod
+#SBATCH --gres=gpu:4
+#SBATCH --time=04:00:00
+#SBATCH --output=/leonardo_scratch/large/userexternal/edorovat/gpt2/outputs/continual_learning/OOD_C1/lsn_skipattn_1.out
+#SBATCH --account=EUHPC_D33_268
+#SBATCH --qos=normal
+
+source /leonardo_work/EUHPC_A04_051/vdoro/language_modeling/DenseFormer/experiments/env/bin/activate
+cd /leonardo_work/EUHPC_A04_051/vdoro/language_modeling/DenseFormer/experiments
+
+LR=0.00005
+BS=32
+ACC_STEPS=1
+MEDQA_STEPS=3120
+BIOLOGY_STEPS=1060
+CHEMISTRY_STEPS=1250
+# TASK 1
+torchrun --nproc_per_node=4 main.py --model 'long_short' --alphas_mean 1.0 --alphas_train --skipattn --exp_name "OOD_CL11_medqa_lsn" --dataset 'medqa' --save_checkpoint_freq 1000000000 --grad_clip 1.0 --iterations $MEDQA_STEPS --n_layer 24 --eval_freq 200 --resume 'exps/owt2/long_short/long_short_skipattn_240k_iters_1/ckpt.pt' --lr $LR --acc_steps $ACC_STEPS --batch_size $BS
+
+# TASK 2
+torchrun --nproc_per_node=4 main.py --model 'long_short' --alphas_mean 1.0 --alphas_train --skipattn --exp_name "OOD_CL12_biology_lsn" --dataset 'biology' --save_checkpoint_freq 1000000000 --grad_clip 1.0 --iterations $BIOLOGY_STEPS --n_layer 24 --eval_freq 200 --resume '/leonardo_scratch/large/userexternal/edorovat/gpt2/exps/medqa/long_short/OOD_CL11_medqa_lsn/ckpt.pt' --lr $LR --acc_steps $ACC_STEPS --batch_size $BS
+
+# TASK 3
+torchrun --nproc_per_node=4 main.py --model 'long_short' --alphas_mean 1.0 --alphas_train --skipattn --exp_name "OOD_CL13_chemistry_lsn" --dataset 'chemistry' --save_checkpoint_freq 1000000000 --grad_clip 1.0 --iterations $CHEMISTRY_STEPS --n_layer 24 --eval_freq 200 --resume '/leonardo_scratch/large/userexternal/edorovat/gpt2/exps/biology/long_short/OOD_CL12_biology_lsn/ckpt.pt' --lr $LR --acc_steps $ACC_STEPS --batch_size $BS
+

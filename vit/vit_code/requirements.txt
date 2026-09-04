@@ -1,0 +1,5 @@
+#Python==3.8
+CUDA==11.0
+torch==1.8.0+cu110
+torchvision==0.10.0+cu110
+einops==0.4.1
