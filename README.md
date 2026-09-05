@@ -1,13 +1,21 @@
-Various code repos used for research on inter-layer connectivity
+# Research Code
 
-For reference read:
-- ACN: https://arxiv.org/abs/2506.09714
-- H-ACN: https://openreview.net/pdf?id=ORSclmXC6X
+Various code repositories used for research on **inter-layer connectivity**.
 
-Several repos have been built on top of others (all credits go to the original owners - and many thanks!):
-- continual-learning: 
-- language_modeling: 
-- teaching-arithmetic:
-- language_modeling/SCAN:
-- simple_vit:
-- - mixer: 
+For reference, see:
+
+- **ACN:** https://arxiv.org/abs/2506.09714
+- **H-ACN:** https://openreview.net/pdf?id=ORSclmXC6X
+
+## Code and Attribution
+
+Several of the repositories in this project were built on top of, or adapted from, existing open-source codebases. **All credit goes to the original authors and repository owners — many thanks for making your work available!**
+
+- **continual-learning:**
+- **language_modeling:**
+- **teaching-arithmetic:**
+- **language_modeling/SCAN:**
+- **simple_vit:**
+- **mixer:**
+
+Please refer to the individual directories and their respective documentation for further details and original sources.
