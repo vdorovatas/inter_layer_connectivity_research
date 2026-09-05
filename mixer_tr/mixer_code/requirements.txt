@@ -1,6 +1,0 @@
-torch==1.10.0
-torchvision
-numpy
-einops
-torchsummary
-scipy
